@@ -1,0 +1,31 @@
+<h1>Rotten Mangoes</h1>
+
+<% form_tag movies_path, :method => 'get' do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+  </p>
+<% end %>
+
+<%= form_tag(movies_path, :method => 'get') do %>
+    <%= label_tag :search_title, "Title"%>
+    <%= text_field_tag :search_title, params[:search], placeholder: "Search Titles" %>
+    <%= label_tag :search_director, "Director"%>
+    <%= text_field_tag :search_director, params[:search], placeholder: "Search Directors" %>
+    <%= label_tag :search_duration, "Duration"%>
+    <%= select_tag :search_duration, "<option></option><option>Under 90 minutes</option><option>Between 90 and 120 minutes</option><option>Over 120 minutes</option>".html_safe%>
+    <a class="btn btn-primary"><%= submit_tag "Search" %></a>
+<% end %>
+
+<%= link_to "Submit a movie!", new_movie_path %>
+<hr>
+<%= paginate @movies %>
+<% @movies.reverse.each do |movie| %>
+  <%= link_to image_tag(movie.cover), movie_path(movie) %>
+  <h2><%= link_to movie.title, movie_path(movie) %> | <%= movie.review_average %>/10</h2>
+  <h3><%= formatted_date(movie.release_date) %></h3>
+  <h4>Dir. <%= movie.director %> | <%= movie.runtime_in_minutes %> minutes</h4>
+  <p><%= movie.description %></p>
+  <hr>
+<% end %>
+
